@@ -561,6 +561,56 @@ Referable Property List:
 
 - :code:`ClusterId`: The Id of the EMR cluster.
 
+EMRServerlessStep
+`````````````````
+Referable Property List:
+
+- :code:`ApplicationId`: The ID of the EMR Serverless application.
+
+Example:
+
+.. code-block:: python
+
+    from sagemaker.workflow.emr_serverless_step import EMRServerlessStep
+    
+    step_emr_serverless = EMRServerlessStep(
+        name="EMRServerlessSampleStep", # required
+        application_id="app-12345", # optional if application_config is provided
+        application_config={ # optional if application_id is provided
+            "Name": "MySparkApp",
+            "Type": "SPARK",
+            "ReleaseLabel": "emr-6.9.0",
+        },
+        job_config={ # required
+            "JobDriver": {
+                "SparkSubmit": {
+                    "EntryPoint": "s3://bucket/script.py",
+                    "EntryPointArguments": ["arg1", "arg2"],
+                    "SparkSubmitParameters": "--conf spark.executor.instances=2"
+                }
+            },
+            "ConfigurationOverrides": {
+                "ApplicationConfiguration": [
+                    {
+                        "Classification": "spark-defaults",
+                        "Properties": {
+                            "spark.driver.memory": "4g"
+                        }
+                    }
+                ],
+                "MonitoringConfiguration": {
+                    "S3MonitoringConfiguration": {
+                        "LogUri": "s3://mybucket/logs/"
+                    }
+                }
+            },
+            "ExecutionTimeoutMinutes": 60
+        },
+        execution_role_arn="arn:aws:iam::123456789012:role/EMRServerlessJobExecutionRole", # required
+        display_name="My EMR Serverless Step",
+        description="Pipeline step to execute EMR Serverless job"
+    )
+
 You can see more details at `AWS official developer guide for Step Introductions`_
 
 .. _AWS official developer guide for Step Introductions: https://docs.aws.amazon.com/sagemaker/latest/dg/build-and-manage-steps.html
@@ -929,6 +979,7 @@ Caching is supported for the following step types:
 - :class:`sagemaker.workflow.quality_check_step.QualityCheckStep`
 - :class:`sagemaker.workflow.clarify_check_step.ClarifyCheckStep`
 - :class:`sagemaker.workflow.emr_step.EMRStep`
+- :class:`sagemaker.workflow.emr_serverless_step.EMRServerlessStep`
 
 In order to create pipeline steps and eventually construct a SageMaker pipeline, you provide parameters within a Python script or notebook. The SageMaker Python SDK creates a pipeline definition by translating these parameters into SageMaker job attributes. Some of these attributes, when changed, cause the step to re-run (See `Caching Pipeline Steps <https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines-caching.html>`__ for a detailed list). Therefore, if you update a SDK parameter that is used to create such an attribute, the step will rerun. See the following discussion for examples of this in commonly used step types in Pipelines.
 

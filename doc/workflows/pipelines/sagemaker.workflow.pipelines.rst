@@ -189,6 +189,8 @@ Steps
 
 .. autoclass:: sagemaker.workflow.emr_step.EMRStep
 
+.. autoclass:: sagemaker.workflow.emr_serverless_step.EMRServerlessStep
+
 .. autoclass:: sagemaker.workflow.automl_step.AutoMLStep
 
 @step decorator
