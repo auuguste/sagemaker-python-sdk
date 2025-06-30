@@ -66,7 +66,7 @@ def test_emr_serverless_step_with_application_id():
 
     assert step.to_request() == expected_request
     assert step._service_name == "emr-serverless"
-    assert step.properties.shape_name == "Step"
+    assert step.properties._shape_names[0] == "Step"
 
 
 def test_emr_serverless_step_with_application_config():
@@ -322,4 +322,4 @@ def test_emr_serverless_step_properties():
 
     # Then
     assert step._service_name == "emr-serverless"
-    assert step.properties.shape_name == "Step"
+    assert step.properties._shape_names[0] == "Step"
