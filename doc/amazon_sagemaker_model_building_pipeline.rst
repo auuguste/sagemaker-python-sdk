@@ -572,7 +572,7 @@ Example:
 .. code-block:: python
 
     from sagemaker.workflow.emr_serverless_step import EMRServerlessStep
-    
+
     step_emr_serverless = EMRServerlessStep(
         name="EMRServerlessSampleStep", # required
         application_id="app-12345", # optional if application_config is provided
